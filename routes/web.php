@@ -1,8 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\libro;
+use App\Models\Rentado;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\LibroController;
+use App\Http\Controllers\RentadoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +28,18 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
+Route::resource('libros', App\Http\Controllers\LibroController::class);
+Route::resource('rentados', App\Http\Controllers\RentadoController::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $libros = libro::with('rentados')->get();
+    $usuario = Auth::user();
+    $rentados = Rentado::where('id_usuario', $usuario->id)->get();
+    return Inertia::render('Dashboard', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+        'libros' => $libros,
+        'rentados' => $rentados
+    ]);
 })->name('dashboard');
