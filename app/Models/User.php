@@ -26,6 +26,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'prestatario',
         'password',
     ];
 
@@ -58,4 +59,8 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    public function rentados()
+    {
+        return $this->belongsToMany('App\Models\Rentado')->withTimestamps();
+    }
 }

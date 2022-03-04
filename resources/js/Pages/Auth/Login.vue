@@ -1,7 +1,7 @@
 <template>
     <jet-authentication-card>
         <template #logo>
-            <jet-authentication-card-logo />
+            <img src="https://i.pinimg.com/564x/36/d4/62/36d46285c8bc86c5f0d9238275887f88.jpg" width="70"/>
         </template>
 
         <jet-validation-errors class="mb-4" />
